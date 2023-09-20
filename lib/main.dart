@@ -7,6 +7,7 @@ import 'package:social_ap/modules/social_app/login/social_login_screen.dart';
 import 'package:social_ap/shared/bloc_observer.dart';
 import 'package:social_ap/shared/components/constants.dart';
 import 'package:social_ap/shared/network/local/cash_helper.dart';
+import 'package:social_ap/shared/styles/themes.dart';
 
 import 'firebase_options.dart';
 import 'layout/social_app/cubit/cubit.dart';
@@ -25,9 +26,11 @@ void main() async {
   } else {
     widget = SocialLoginScreen();
   }
-  runApp(MyApp(
-    startWidget: widget,
-  ));
+  runApp(
+    MyApp(
+      startWidget: widget,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -48,6 +51,9 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
+            theme: lightMode,
+            darkTheme: darkMode,
+            themeMode: ThemeMode.light,
             home: startWidget,
           );
         },

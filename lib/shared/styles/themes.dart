@@ -15,12 +15,14 @@ ThemeData darkMode = ThemeData(
     elevation: 0,
     backgroundColor: HexColor('333739'),
     titleTextStyle: const TextStyle(
-        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        fontFamily: 'Jannah',
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 18),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     unselectedItemColor: Colors.grey,
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: Colors.orange,
     backgroundColor: HexColor('333739'),
     elevation: 20,
   ),
@@ -29,12 +31,9 @@ ThemeData darkMode = ThemeData(
         fontWeight: FontWeight.w600, fontSize: 18, color: Colors.white),
   ),
   scaffoldBackgroundColor: HexColor('333739'),
+  fontFamily: 'Jannah',
 );
 ThemeData lightMode = ThemeData(
-  primarySwatch: Colors.orange,
-  floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: Colors.orange,
-  ),
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(
       titleSpacing: 18,
@@ -43,13 +42,18 @@ ThemeData lightMode = ThemeData(
       elevation: 0,
       backgroundColor: Colors.white,
       titleTextStyle: TextStyle(
-          color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+          fontFamily: 'Jannah',
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 20)),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: Colors.orange,
+    selectedIconTheme: IconThemeData(color: Colors.blue),
     elevation: 20,
   ),
   textTheme: const TextTheme(
-      bodyLarge: TextStyle(
-          fontWeight: FontWeight.w600, fontSize: 18, color: Colors.black)),
+    bodyLarge: TextStyle(
+        fontWeight: FontWeight.w600, fontSize: 18, color: Colors.black),
+  ),
+  fontFamily: 'Jannah',
 );
