@@ -9,11 +9,11 @@ class UserModel {
   bool? isEmailVerified;
 
   UserModel(
-      {required this.name,
+      {this.name,
       this.email,
       this.uId,
-      required this.phone,
-      required this.isEmailVerified,
+      this.phone,
+      this.isEmailVerified,
       this.bio,
       this.cover,
       this.image});

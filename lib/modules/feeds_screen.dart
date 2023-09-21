@@ -1,4 +1,9 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_ap/layout/social_app/cubit/cubit.dart';
+import 'package:social_ap/layout/social_app/cubit/states.dart';
+import 'package:social_ap/models/post_model.dart';
 
 import '../shared/styles/icon_broken.dart';
 
@@ -7,63 +12,76 @@ class FeedsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          const Card(
-            margin: EdgeInsets.all(8),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            elevation: 5,
-            child: Stack(
-              alignment: Alignment.bottomRight,
+    return BlocConsumer<SocialCubit, SocialStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return ConditionalBuilder(
+          condition: SocialCubit.get(context).posts.isNotEmpty,
+          builder: (context) => SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
               children: [
-                Image(
-                  image: NetworkImage(
-                      'https://img.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg?w=826&t=st=1695048347~exp=1695048947~hmac=71e24c51f842fdfb2e1d1e05a50b6c47989c7b447c5e9f0be0b9c3a3683ecf93'),
-                  height: 190,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'communicate with friends',
-                    style: TextStyle(color: Colors.white),
+                const Card(
+                  margin: EdgeInsets.all(8),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  elevation: 5,
+                  child: Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      Image(
+                        image: NetworkImage(
+                            'https://img.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg?w=826&t=st=1695048347~exp=1695048947~hmac=71e24c51f842fdfb2e1d1e05a50b6c47989c7b447c5e9f0be0b9c3a3683ecf93'),
+                        height: 190,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'communicate with friends',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                ListView.separated(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index) => buildItemPost(
+                        SocialCubit.get(context).posts[index], context, index),
+                    separatorBuilder: (context, index) => const SizedBox(
+                          height: 10,
+                        ),
+                    itemCount: SocialCubit.get(context).posts.length)
               ],
             ),
           ),
-          ListView.separated(
-              shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) => buildItemPost(context),
-              separatorBuilder: (context, index) => SizedBox(
-                    height: 10,
-                  ),
-              itemCount: 10)
-        ],
-      ),
+          fallback: (context) =>
+              const Center(child: CircularProgressIndicator()),
+        );
+      },
     );
   }
 
-  Widget buildItemPost(context) => Card(
-        margin: EdgeInsets.all(8),
+  Widget buildItemPost(PostModel model, context, index) => Card(
+        margin: const EdgeInsets.all(8),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         elevation: 5,
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   CircleAvatar(
                     radius: 25,
                     backgroundImage: NetworkImage(
-                        'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg'),
+                      '${model.image}',
+                    ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 7,
                   ),
                   Expanded(
@@ -73,13 +91,13 @@ class FeedsScreen extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'Mohamded Abdullah',
-                              style: TextStyle(height: 1.2),
+                              '${model.name}',
+                              style: const TextStyle(height: 1.2),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
-                            Icon(
+                            const Icon(
                               Icons.check_circle,
                               size: 17,
                               color: Colors.blue,
@@ -87,7 +105,7 @@ class FeedsScreen extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          'January 21, 2021 at 11:00',
+                          '${model.dateTime}',
                           style: Theme.of(context)
                               .textTheme
                               .caption
@@ -96,11 +114,11 @@ class FeedsScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 7,
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.more_horiz,
                       size: 16.0,
                     ),
@@ -119,8 +137,11 @@ class FeedsScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-                style: TextStyle(height: 1.4, fontSize: 13),
+                '${model.text}',
+                style: const TextStyle(height: 1.4, fontSize: 13),
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -175,21 +196,25 @@ class FeedsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                height: 140.0,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    4.0,
-                  ),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      'https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg',
+              const SizedBox(
+                height: 5,
+              ),
+              if (model.postImage != '')
+                Container(
+                  height: 140.0,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      4.0,
                     ),
-                    fit: BoxFit.cover,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        '${model.postImage}',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 5.0,
@@ -204,16 +229,16 @@ class FeedsScreen extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 IconBroken.Heart,
                                 size: 16.0,
                                 color: Colors.red,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5.0,
                               ),
                               Text(
-                                '120',
+                                '${SocialCubit.get(context).likes[index]}',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ],
@@ -231,12 +256,12 @@ class FeedsScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Icon(
+                              const Icon(
                                 IconBroken.Chat,
                                 size: 16.0,
                                 color: Colors.amber,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5.0,
                               ),
                               Text(
@@ -271,10 +296,10 @@ class FeedsScreen extends StatelessWidget {
                           CircleAvatar(
                             radius: 18.0,
                             backgroundImage: NetworkImage(
-                              'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg',
+                              '${SocialCubit.get(context).userModel!.image}',
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 15.0,
                           ),
                           Text(
@@ -289,12 +314,12 @@ class FeedsScreen extends StatelessWidget {
                   InkWell(
                     child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           IconBroken.Heart,
                           size: 16.0,
                           color: Colors.red,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5.0,
                         ),
                         Text(
@@ -303,7 +328,10 @@ class FeedsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      SocialCubit.get(context)
+                          .likePost(SocialCubit.get(context).postsId[index]);
+                    },
                   ),
                 ],
               ),
